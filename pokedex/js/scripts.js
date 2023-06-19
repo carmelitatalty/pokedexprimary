@@ -7,13 +7,12 @@ let pokemonlist = [
   { types: ["electric"], name: "Pikachu", height: ".4" },
 ];
 document.write("<ul>");
-for (let i = 0; i < pokemonlist.length; i++) {
-  let pokemon = pokemonlist[i];
+pokemonlist.forEach (function(pokemon)  {
   let pokemontext = `${pokemon.name} (height: ${pokemon.height})`;
 
   if (pokemon.height > 1) {
     pokemontext = `${pokemontext} - WOW, that's big!`;
   }
   document.write(`<li>${pokemontext}</li>`);
-}
+})
 document.write("</ul>");
