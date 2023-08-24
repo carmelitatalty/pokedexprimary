@@ -31,3 +31,48 @@
   color: black;
   transform: translate(-50%, 0%);
 }
+
+.pokemon-logo {
+  max-width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.poke-nav-item {
+  cursor:pointer
+}
+
+main {
+  background-color: #8984A4;
+}
+
+.pagination {
+  /* width: 100%; */
+  /* background-color: #A25C7E; */
+  /* margin-left: auto;
+  margin-right: auto; */
+  /* display: block; */
+}
+
+.pagination-div {
+  /* display:block; */
+  background-color: #A25C7E;
+  width: 100%;
+  /* margin-left: auto;
+  margin-right: auto; */
+
+  
+  display: flex;
+  justify-content: center;
+}
+
+.head-logo {
+  width: 100%;
+}
+
+.navbar-brand {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}

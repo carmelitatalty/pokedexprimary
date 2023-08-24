@@ -29,93 +29,73 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <header>
+      <nav aria-label="...">
+        <div class="head-logo">
+          <a class="navbar-brand" href="#">
+            <img
+              src="./img/pokemon-23-logo-svg-vector.svg"
+              class="pokemon-logo"
+              alt="Pokemon"
+            />
+          </a>
+        </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Pokemon</a>
-      <a
-        class="navbar-toggler"
-        type="=button"
-        data-toggle="collapse"
-        data-target="navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navagation"
+        <div class="pagination-div"><ul class="pagination" id="paging-list"></ul></div>
+        
+      </nav>
+    </header>
+    <main>
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
       >
-        <span class="navbar-toggler-icon"></span>
-      </a>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-            </a>
-            <div
-              class="dropdown-menu"
-              id="poke-page-dropdown"
-              aria-labelledby="navbarDropdown"
-            ></div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title text-capitalize" id="exampleModalLabel">
-              Pokemon
-            </h3>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="h5">
-              <span>Height</span
-              ><span id="pokemon-height" class="text-muted ml-2"></span>
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title text-capitalize" id="exampleModalLabel">
+                Pokemon
+              </h3>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div>
-              <span class="h5">Types: </span>
-              <ul id="pokemon-types"></ul>
+            <div class="modal-body">
+              <div class="h5">
+                <span>Height</span
+                ><span id="pokemon-height" class="text-muted ml-2"></span>
+              </div>
+              <div>
+                <span class="h5">Types: </span>
+                <ul id="pokemon-types"></ul>
+              </div>
+              <img id="pokemon-img" />
             </div>
-            <img id="pokemon-img" />
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <ul class="list-group"></ul>
-    <div id="pokemon-list" class="d-flex flex-wrap"></div>
-    <div id="image-container"></div>
-
+      <ul class="list-group"></ul>
+      <div id="pokemon-list" class="d-flex flex-wrap"></div>
+      <div id="image-container"></div>
+    </main>
     <script src="../pokedex/js/promise-polyfill.js"></script>
     <script src="../pokedex/js/fetch-polyfill.js"></script>
     <script src="../pokedex/js/scripts.js"></script>

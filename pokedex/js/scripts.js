@@ -8,7 +8,6 @@ let pokemonRepository = (function () {
     offset = _offset;
     limit = _limit;
     let url = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`;
-    console.log(url);
 
     return fetch(url)
       .then(function (response) {
@@ -17,7 +16,6 @@ let pokemonRepository = (function () {
       .then(function (json) {
         totalCount = json.count;
         pokemonList = [];
-        console.log(json);
         json.results.forEach(function (item) {
           let pokemon = {
             name: item.name,
@@ -49,33 +47,80 @@ let pokemonRepository = (function () {
 })();
 
 let pokemonUI = (function () {
+  let numOfPages = 0;
   function loadUpdatedMenu() {
-    let dropdownMenu = document.querySelector("#poke-page-dropdown");
-    while (dropdownMenu.firstChild) {
-      dropdownMenu.removeChild(dropdownMenu.firstChild);
-    }
+    let pagingList = $("#paging-list");
+
+    let prev = $(
+      '<li class="btn btn-light page-item page-link" id="paging-prev">Previous</a></li>'
+    );
+    
+    prev.on('click', function() {
+      pokemonApp.loadPrev()
+    })
+
+    pagingList.append(prev);
 
     let count = pokemonRepository.getTotalCount();
     let offset = pokemonRepository.getOffset();
     let limit = pokemonRepository.getLimit();
+    let pageNumber = 1;
     while (offset < count) {
-      console.log(offset);
+      const pNumber = pageNumber;
       let max = offset + limit;
 
       if (max > count) {
         max = count;
       }
+      let li = $(`<li class="btn btn-light page-item page-link" id="paging-${pageNumber}">${pageNumber++}</li>`)
+      pagingList.append(li)
+      li.on('click', function() {
+        pokemonApp.loadPokemon(pNumber, limit)
+      })
 
-      let li = document.createElement("li");
-      li.classList.add("nav-item");
-      li.textContent = `${offset + 1} - ${max}`;
-      let _offset = offset;
-      li.addEventListener("click", () => {
-        pokemonApp.loadPokemon(_offset, limit);
-      });
-
-      dropdownMenu.appendChild(li);
       offset += limit;
+    }
+    numOfPages=pageNumber;
+
+    let next = $(
+      '<li class="btn btn-light page-item page-link" id="paging-next">Next</li>'
+    );
+    
+    next.on('click', function() {
+      pokemonApp.loadNext()
+    })
+    pagingList.append(next);
+  }
+
+  function updateMenuPage(pageNumber) {
+    console.log(`Update page to ${pageNumber}`)
+    let prevButton = $('#paging-prev');
+    if (pageNumber === 1) {
+      prevButton.addClass('disabled')
+    } else {
+      prevButton.removeClass('disabled')
+      const pNumber = pageNumber - 1;
+      prevButton.attr('data-page', pNumber)
+      prevButton.data('page', pNumber)
+    }
+
+    let nextButton = $('#paging-next')
+    if (pageNumber === numOfPages -1) { 
+      nextButton.addClass('disabled')
+    } else {
+      nextButton.removeClass('disabled')
+      const pNumber = pageNumber + 1;
+      nextButton.attr('data-page', pNumber)
+      nextButton.data('page', pNumber)
+    }
+
+    for (let i = 1; i < numOfPages+1; i++) {
+      let pageButton = $(`#paging-${i}`)
+      if (i == pageNumber) {
+        pageButton.addClass('active')
+      } else {
+        pageButton.removeClass('active')
+      }
     }
   }
 
@@ -91,7 +136,6 @@ let pokemonUI = (function () {
     button.setAttribute("data-target", "#exampleModal");
     button.setAttribute("data-pokemon-name", pokemon.name);
     button.setAttribute("data-pokemon-url", pokemon.detailsUrl);
-    console.log(JSON.stringify(pokemon));
 
     button.classList.add("btn");
     button.classList.add("btn-primary");
@@ -108,7 +152,7 @@ let pokemonUI = (function () {
     pokemonItem.append(pokeballButton);
 
     let pokeballImg = $(
-      `<img class="img-fluid pokeball" src="img/one018e_51_e01.jpg" alt="${pokemon.name}" />`
+      `<img class="img-fluid pokeball" src="img/pokeball.svg" alt="${pokemon.name}" />`
     );
     pokeballButton.append(pokeballImg);
 
@@ -125,7 +169,6 @@ let pokemonUI = (function () {
     $("#pokemon-list").empty();
 
     let pokemonList = pokemonRepository.getAll();
-    console.log(pokemonList);
     pokemonList.forEach(function (pokemon) {
       pokemonUI.addListItem(pokemon);
     });
@@ -135,14 +178,16 @@ let pokemonUI = (function () {
     addListItem: addListItem,
     loadUpdatedMenu: loadUpdatedMenu,
     loadUpdatedList: loadUpdatedList,
+    updateMenuPage: updateMenuPage
   };
 })();
 
 let pokemonApp = (function () {
   let menuLoaded = false;
 
-  let loadPokemon = function (offset = 0, limit = 150) {
-    console.log(`Loading pokemon ${offset}: ${limit}`);
+  let loadPokemon = function (page = 1, limit = 150) {
+    let offset = (page - 1) * limit;
+    console.log(`Loading pokemon ${page} ${offset}: ${limit}`);
     pokemonRepository.loadPagedList(offset, limit).then(() => {
       pokemonUI.loadUpdatedList();
 
@@ -150,11 +195,24 @@ let pokemonApp = (function () {
         pokemonUI.loadUpdatedMenu();
         menuLoaded = true;
       }
+      pokemonUI.updateMenuPage(page)
     });
   };
 
+  let loadPrev = function() {
+    const pNumber = $('#paging-prev').data('page')
+    console.log(`prev: ${pNumber}`)
+    loadPokemon(pNumber)
+  }
+
+  let loadNext = function() {
+    const pNumber = $('#paging-next').data('page')
+    console.log(`next: ${pNumber}`)
+    loadPokemon(pNumber)
+  }
+
   return {
-    loadPokemon,
+    loadPokemon, loadPrev, loadNext
   };
 })();
 
@@ -164,7 +222,6 @@ $("#exampleModal").on("show.bs.modal", function (event) {
   var button = $(event.relatedTarget);
   var pokemonName = button.data("pokemon-name");
   var url = button.data("pokemon-url");
-  console.log(JSON.stringify(url));
   var modal = $(this);
   modal.find(".modal-title").text("" + pokemonName);
 
@@ -177,7 +234,8 @@ $("#exampleModal").on("show.bs.modal", function (event) {
       return response.json();
     })
     .then((pokemon) => {
-      pokemonHeight.text(pokemon.height);
+      let height = pokemon.height / 10;
+      pokemonHeight.text(`${height} m`);
       pokemonTypes.empty();
 
       pokemon.types.forEach(function (type) {
