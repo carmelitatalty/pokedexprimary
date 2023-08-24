@@ -1,0 +1,33 @@
+.poke-button {
+  position: relative;
+}
+
+.poke-button-name {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+}
+
+.poke-button {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.poke-item {
+  position: relative;
+  height: 250px;
+  width: 250px;
+}
+
+.pokeball-name {
+  position: absolute;
+  bottom: 120px;
+  width: 175px;
+  left: 50%;
+  font-size: 24px;
+  text-align: center;
+  color: black;
+  transform: translate(-50%, 0%);
+}
