@@ -219,6 +219,18 @@ let pokemonApp = (function () {
 pokemonApp.loadPokemon();
 
 $("#exampleModal").on("show.bs.modal", function (event) {
+  const pickImage = function(sprites) {
+    if (sprites['other']['official-artwork']['front_default']) {
+      return sprites['other']['official-artwork']['front_default'];
+    }
+    if (sprites.other.dream_world.front_default) {
+      return sprites.other.dream_world.front_default;
+    }
+    if (sprites.front_default) {
+      return sprites.front_default;
+    }
+  }
+
   var button = $(event.relatedTarget);
   var pokemonName = button.data("pokemon-name");
   var url = button.data("pokemon-url");
@@ -226,8 +238,11 @@ $("#exampleModal").on("show.bs.modal", function (event) {
   modal.find(".modal-title").text("" + pokemonName);
 
   var pokemonHeight = modal.find("#pokemon-height");
+  pokemonHeight.text('')
   var pokemonTypes = modal.find("#pokemon-types");
+  pokemonTypes.empty();
   var pokemonImg = modal.find("#pokemon-img");
+  pokemonImg.attr('src', '')
 
   fetch(url)
     .then(function (response) {
@@ -244,6 +259,7 @@ $("#exampleModal").on("show.bs.modal", function (event) {
         pokemonTypes.append(typeElement);
       });
 
-      pokemonImg.attr("src", pokemon.sprites.front_default);
+      pokemonImg.attr("src", pickImage(pokemon.sprites));
+      pokemonImg.attr('alt', pokemonName)
     });
 });

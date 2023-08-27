@@ -76,3 +76,7 @@ main {
   margin-right: auto;
   display: block;
 }
+
+.pokemon-img {
+  width: 250px;
+}
