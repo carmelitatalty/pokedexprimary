@@ -47,21 +47,11 @@ main {
   background-color: #8984A4;
 }
 
-.pagination {
-  /* width: 100%; */
-  /* background-color: #A25C7E; */
-  /* margin-left: auto;
-  margin-right: auto; */
-  /* display: block; */
-}
 
 .pagination-div {
-  /* display:block; */
   background-color: #A25C7E;
   width: 100%;
-  /* margin-left: auto;
-  margin-right: auto; */
-
+ 
   
   display: flex;
   justify-content: center;
